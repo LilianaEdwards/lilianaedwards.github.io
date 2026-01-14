@@ -328,10 +328,6 @@ document.querySelector(".photo-close").onclick=()=>{
 };
 
 function unlockSecret(){
-    if(new Date()<new Date("2026-01-15")){
-        alert("🙅🏻‍♀️ Please open at 15.1.2026");
-        return;
-    }
     if(secretPass.value==="15112024"){
         secretMsg.style.display="block";
         voiceMsg.play();
@@ -341,3 +337,4 @@ function unlockSecret(){
 
 </body>
 </html>
+
