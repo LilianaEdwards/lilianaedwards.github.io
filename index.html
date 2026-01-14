@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>A & K Memories ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(180deg,#a3f4fc,#f7ecba,#fab3f2);
+    color:white;
+    overflow-x:hidden
+}
+.gradient-text{
+      background: linear-gradient(to right, #f3f853, #426ef3, #f62828);
+      -webkit-background-clip: text;
+  background-clip: text; /* Standard property, but less supported than the prefixed version */
+
+  /* 3. Make the actual text transparent so the background shows through */
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.gradient-text1{
+      background: linear-gradient(to right, #f64ca9, #e76ef0, #f7965a);
+      -webkit-background-clip: text;
+  background-clip: text; /* Standard property, but less supported than the prefixed version */
+
+  /* 3. Make the actual text transparent so the background shows through */
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+section{padding:40px 20px;text-align:center}
+h1{font-size:2.6rem} h2{font-weight:300}
+
+/* Floating hearts */
+.heart-float{
+    position:fixed;bottom:-10px;font-size:20px;
+    animation:floatUp 10s linear infinite;opacity:.7
+}
+@keyframes floatUp{to{transform:translateY(-110vh)}}
+
+/* Cards */
+.card{
+    background:rgba(255,255,255,.15);
+    border-radius:20px;
+    padding:25px;
+    margin:25px auto;
+    max-width:900px;
+    animation:floatCard 6s ease-in-out infinite
+}
+@keyframes floatCard{50%{transform:translateY(-6px)}}
+
+/* Gallery */
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:15px
+}
+.gallery img{
+    width:100%;height:180px;
+    object-fit:cover;border-radius:15px;
+    cursor:pointer;transition:.6s
+}
+.gallery img:hover{
+    transform:scale(1.05);
+    box-shadow:0 20px 40px rgba(255,120,160,.35)
+}
+
+/* Story */
+.story{
+    background:rgba(255,255,255,.2);
+    border-radius:15px;
+    padding:20px;
+    margin:15px 0;
+    text-align:left;
+    cursor:pointer
+}
+.story-content{
+    max-height:0;opacity:0;overflow:hidden;
+    transition:.6s
+}
+.story-content.show{
+    max-height:300px;opacity:1;margin-top:10px
+}
+
+/* Inputs & buttons */
+input,button{
+    padding:12px;border-radius:20px;
+    border:none;margin-top:10px
+}
+button{
+    background:#fff;color:#e75480;
+    cursor:pointer
+}
+
+/* Language switch */
+.lang-switch{position:fixed;top:10px;right:10px}
+
+/* Footer */
+footer{padding:30px;opacity:.85}
+
+/* Photo modal */
+.photo-modal{
+    position:fixed;inset:0;background:rgba(0,0,0,.65);
+    display:none;align-items:center;justify-content:center;
+    z-index:9999
+}
+.photo-modal.show{display:flex}
+.photo-box{
+    background:linear-gradient(180deg,#ffdde1,#ee9ca7);
+    padding:22px;border-radius:22px;
+    width:90%;max-width:420px;
+    text-align:center;animation:zoomIn .4s ease
+}
+.photo-box img{
+    width:100%;height:260px;
+    object-fit:cover;border-radius:16px
+}
+.photo-meta{font-size:.85rem;opacity:.85;margin:8px 0}
+.photo-close{
+    position:absolute;top:14px;right:20px;
+    font-size:1.6rem;cursor:pointer
+}
+@keyframes zoomIn{
+    from{opacity:0;transform:scale(.85)}
+    to{opacity:1;transform:scale(1)}
+}
+</style>
+</head>
+
+<body>
+
+<audio controls autoplay>
+    <source src="kokoe.mp3" type="audio/mpeg">
+</audio>
+
+<div class="lang-switch">
+    <button onclick="setLang('en')">EN</button>
+    <button onclick="setLang('mm')">MM</button>
+</div>
+
+<script>
+for(let i=0;i<25;i++){
+    const h=document.createElement("div");
+    h.className="heart-float";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=6+Math.random()*6+"s";
+    h.innerHTML="🩷  💗";
+    document.body.appendChild(h);
+}
+</script>
+
+<section class="title">
+    <h1 id="title" class="gradient-text"></h1>
+    <h2 id="subtitle" class="gradient-text"></h2>
+</section>
+
+<section class="card">
+    <h3 id="countTitle" class="gradient-text1"></h3>
+    <p id="countdown" class="gradient-text"></p>
+</section>
+
+<section class="card">
+    <h3 id="photoTitle" class="gradient-text1"></h3>
+    <div class="gallery">
+        <img src="game.jpg" data-photo="p1">
+        <img src="firstdate.jpg" data-photo="p2">
+        <img src="school.jpg" data-photo="p3">
+        <img src="mandalay.jpg" data-photo="p4">
+    </div>
+</section>
+
+<section class="card">
+    <h3 id="storyTitle" class="gradient-text1"></h3>
+
+    <div class="story" onclick="toggleStory(1)">
+        <strong id="chapter1Title" class="gradient-text"></strong>
+        <div class="gradient-text1">
+        <div class="story-content" id="chapter1Content"></div></div>
+    </div>
+
+    <div class="story" onclick="toggleStory(2)">
+        <strong id="chapter2Title" class="gradient-text"></strong>
+        <div class="gradient-text1">
+        <div class="story-content" id="chapter2Content"></div></div>
+    </div>
+
+    <div class="story" onclick="toggleStory(3)">
+        <strong id="chapter3Title" class="gradient-text"></strong>
+        <div class="gradient-text1">
+        <div class="story-content" id="chapter3Content"></div></div>
+    </div>
+
+    <div class="story" onclick="toggleStory(4)">
+        <strong id="chapter4Title" class="gradient-text"></strong>
+        <div class="gradient-text1">
+        <div class="story-content" id="chapter4Content"></div></div>
+    </div>
+
+    <div class="story" onclick="toggleStory(5)">
+        <strong id="chapter5Title" class="gradient-text"></strong>
+        <div class="gradient-text1">
+        <div class="story-content" id="chapter5Content"></div></div>
+    </div>
+</section>
+
+<!-- Secret -->
+<section class="card">
+    <h3 id="secretTitle" class="gradient-text1"></h3>
+    <p id="secretInfo" class="gradient-text1"></p>
+    <input type="password" id="secretPass">
+    <br>
+    <button onclick="unlockSecret()" id="secretBtn" class="gradient-text1"></button>
+    <div id="secretMsg" style="display:none;margin-top:15px">
+        <h2 id="secretText" class="gradient-text1"></h2>
+        <audio id="voiceMsg" controls style="width:100%;margin-top:10px">
+            <source src="love.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+</section>
+
+<footer id="footerText" class="gradient-text1"></footer>
+
+<div id="photoModal" class="photo-modal">
+    <div class="photo-box">
+        <span class="photo-close">&times;</span>
+        <img id="modalImg">
+        <div class="photo-meta" id="modalMeta"></div>
+        <p id="modalText"></p>
+    </div>
+</div>
+
+<script>
+const startDate=new Date("2024-11-15");
+setInterval(()=>{
+    countdown.innerText=
+    Math.floor((new Date()-startDate)/(1000*60*60*24))+
+    " days together 👩‍❤️‍👨";
+},1000);
+
+/* Content */
+const content={
+en:{
+title:"Hi Kokoe! \nThis is our love story from the beginning \nThe story of a law boy and a computer girl🧑🏽‍⚖️👩🏽‍💻",
+subtitle:"We have been together since\n 15 November 2024",
+countTitle:"Time Since We Fell in Love and still counting",
+photoTitle:"Our Moments",
+storyTitle:"Our Story",
+chapter1Title:"Chapter 1: How It Began",
+chapter1Content:"It started unexpectedly, but it felt right from the first moment.We talked for several days by sharing the daily life of each other and shared our feelings.",
+chapter2Title:"Chapter 2: Growing Closer",
+chapter2Content:"Late conversations, shared laughter, and warmth.We shared each's feelings openly and solved the problems together.Then we get closer to each other.",
+chapter3Title:"Chapter 3: Trust",
+chapter3Content:"Through ups and downs, trust grew quietly.We trust each other to make one feel comfort.But I am jealous of you with everyone.That is not because I don't trust you but becasue I have more love over you.",
+chapter4Title:"Chapter 4: Stronger Together",
+chapter4Content:"Every challenge made us stronger together.So,I hope we can still solve the problems together.Don't be selfish.Please take a look upon me.",
+chapter5Title:"Chapter 5: Forever",
+chapter5Content:"No matter what comes, I choose you every day and vise versa.If not,I will sell your ....! Anyway,thank you for placing me as your first priority,always being beside by my side.There is one thing you should care about that don't prior your anger.\nI love you very much",
+secretTitle:"🔒 Secret Message",
+secretInfo:"Unlocks on 15 January 2026\nHint: Our anniversary date",
+secretBtn:"Unlock",
+secretText:"This voice carries my love, always.\nHappy 1 year and 2 months anniversary",
+footer:"Made with endless love 💕"
+},
+mm:{
+title:"ကိုကိုနဲ့သဲသဲတို့ရဲ့ အချစ်ဇာတ်လမ်းလေးပေါ့ 💗\nဥပဒေကျောင်းသားလေးနဲ့ကွန်ပျူတာကျောင်းသူလေးတို့ရဲ့ ပုံပြင်လေးပေါ့ရှင်",
+subtitle:"2024 နိုဝင်ဘာရဲ့ ဒီလိုရက်လေးကနေ ဒီနေ့ထိအတူတူရှိခဲ့ကြတာပေါ့",
+countTitle:"အချစ်စတင်ခဲ့ချိန်မှ ယနေ့အထိ",
+photoTitle:"အမှတ်တရများ",
+storyTitle:"အချစ်ပုံပြင်",
+chapter1Title:"အခန်း (၁): မူလပထမ အစ",
+chapter1Content:"မမျှော်လင့်ပဲတွေ့ခဲ့ကြရပေမယ့် ရွေးချယ်မှုတွေမှန်ကန်နေဆဲပဲလို့ ယုံကြည်ပါတယ်\nစကားစပြောကြကတည်းက နေ့တိုင်း တစ်ယောက်ယောက်နဲ့‌တစ်ယောက်ရဲ့ လူမှုဘဝတွေ ခံစားချက်တွေ ဝေမျှခဲ့ကြတာပေါ့",
+chapter2Title:"အခန်း (၂): တဖြည်းဖြည်း နီးစပ်လာပုံ",
+chapter2Content:"ညနောက်ကျစကားတွေ၊ အပြုံးတွေ၊ နွေးထွေးမှုတွေနဲ့ ရင်းနှီးလာကြတာပေါ့။\nခံစားချက်တွေကို တစ်ယောက်နဲ့တစ်‌ယောက် ပွင့်ပွင့်လင်းလင်းပြောခဲ့ကြတယ်။\nပြဿနာတွေကို တစ်ယောက်နဲ့တစ်ယောက် လျစ်လျူမရှုပဲဖြေရှင်းခဲ့ကြတယ်ဒီလိုနဲ့ပဲ ပိုပိုပြီးအဆင်ပြေလာကြတာပေါ့",
+chapter3Title:"အခန်း (၃): ယုံကြည်မှု",
+chapter3Content:"အခက်အခဲတွေကြားမှာ ယုံကြည်မှု တိုးလာခဲ့တယ်။သံသယစိတ်တွေလဲ မရှိရအောင် တစ်ယောက်နဲ့တစ်ယောက်ယုံကြည်ပေးကြတယ်။\nဒါပေမယ့် ကိုကို့ကို ဘယ်သူနဲ့နေနေ သဝန်တိုပါတယ် ဟိဟိ\nမယုံကြည်တာမဟုတ်ပဲ အချစ်တွေပိုလာလို့ ချုပ်ချယ်ချင်သလိုဖြစ်နေတာပါ",
+chapter4Title:"အခန်း (၄): အတူတူ နားလည်ပေးခြင်း",
+chapter4Content:"စိန်ခေါ်မှုတိုင်းက ကျွန်တော်တို့ကို ပိုခိုင်မာစေခဲ့တယ်။နောက်နောင်မှာလဲ အခက်အခဲတွေကို နားလည်မှုရှိရှိနဲ့ဖြေရှင်းသွားနိုင်ကြမယ်လို့ မျှော်လင့်ပါတယ်။အမြဲတမ်းတစ်ကိုယ်ကောင်းမဆန်ပဲ သဲသဲဘက်ကိုလဲ တွေးကြည့်ပေးပါ",
+chapter5Title:"အခန်း (၅): ထာဝရ အတူရှိဖို့",
+chapter5Content:"ဘာတွေဖြစ်ဖြစ် ကိုကို့ကိုပဲ အမြဲ ရွေးချယ်မယ်။ကိုကိုလဲ ရွေးချယ်မယ်လို့မျှော်လင့်ပါတယ်။မရွေးရင် ဥဖြုတ်ရောင်းမှာပါ ဟုတ်။\nဘာပဲဖြစ်ဖြစ် သဲသဲကို ပထမနေရာမှာထားပေးလို့ အရမ်းကျေးဇူးတင်ပါတယ်။အရာရာနားလည်ပေးတဲ့အတွက် အမြဲဘေးမှာရှိပေးတဲ့အတွက်လဲ ကျေးဇူးတင်ပါတယ်ရှင့်။\nမှာချင်တာတစ်ခုကတော့ အမြဲဒေါသကိုရှေ့တန်းမတင်ဖို့ပါပဲ\nအာဘွား ချစ်တယ်နော်",
+secretTitle:"🔒 လျှို့ဝှက်စာလေးပါရှင့်",
+secretInfo:"15ရက်နေ့မှ ဖွင့်လို့ရပါမယ်နော်\nHint: Our anniversary date",
+secretBtn:"ဖွင့်ကြည့်ပါ",
+secretText:"Happy 1 year and 2 months anniversary par Kokoe\nအချစ်တွေကို အသံလေးနဲ့ဖော်ပြလိုက်ရပါကြောင်း",
+footer:"အချစ်များစွာနဲ့ သဲသဲ 💕"
+}
+};
+
+let currentLang="en";
+function setLang(lang){
+    currentLang=lang;
+    Object.keys(content[lang]).forEach(id=>{
+        const el=document.getElementById(id);
+        if(el) el.innerText=content[lang][id];
+    });
+}
+setLang("en");
+
+function toggleStory(n){
+    document.getElementById(`chapter${n}Content`)
+        .classList.toggle("show");
+}
+
+/* Photo data */
+const photoDetails={
+p1:{en:"Game partners to life partners.The day we became partners in game",mm:"ဂိမ်းအဖော်ကနေ ဘဝအဖော်ဖြစ်လာခဲ့ပါတယ်။\nဂိမ်းထဲကနေ စသိပြီး Partner စချိတ်ခဲ့တဲ့နေ့လေးပေါ့",date:"2024-10-20",place:"Mobile Legend"},
+p2:{en:"Our first Mandalay date.",mm:"ဒါလေးကတော့ မန္တလေးမှာ ပထမဆုံးတွေ့ခဲ့ရတဲ့နေ့လေးပေါ့။",date:"2024-11-01",place:"Kuthodaw Pagoda"},
+p3:{en:"The time to remember everytime.We talked and fighted with the problems almost everyday",mm:"အမြဲအမှတ်ရနေရမယ့် နေရာတွေ အချိန်တွေရယ်ပါ\nတစ်နေကုန် စကားတွေပြော ရန်တွေဖြစ် ပြဿနာပေါင်းစုံနဲ့ရက်တွေပေါ့",date:"2023-07-12",place:"Technological University(Mandalay)"},
+p4:{en:"Memories besides Mandalay Hill.I forgot about all the problems and stress whenever I am with you.And I have been left with lovesick when you went back. TwT",mm:"ဒါလေးကတော့ ကျုံးဘေးက ဘယ်တော့မှမမေ့နိုင်မယ့်အချိန်တွေ\nချစ်သူလေးနဲ့အတူတူရှိနေတဲ့အချိန်မှာ စိတ်ဖိစီးတာတွေ ပင်ပန်းတာတွေအကုန်မေ့မေ့ပျောက်ပျောက်ပါပဲ\nပြန်သွားတော့ အလွမ်းဒါဏ်တွေနဲ့ ဖျားကျန်ခဲ့ရတာပေါ့ TwT",date:"2024-12-05",place:"Mandalay"}
+};
+
+let activePhoto=null;
+document.querySelectorAll(".gallery img").forEach(img=>{
+    img.onclick=()=>{
+        activePhoto=img.dataset.photo;
+        modalImg.src=img.src;
+        modalText.innerText=photoDetails[activePhoto][currentLang];
+        modalMeta.innerText=
+            "📅 "+photoDetails[activePhoto].date+
+            " • 📍 "+photoDetails[activePhoto].place;
+        photoModal.classList.add("show");
+    };
+});
+document.querySelector(".photo-close").onclick=()=>{
+    photoModal.classList.remove("show");
+};
+
+function unlockSecret(){
+    if(new Date()<new Date("2026-01-15")){
+        alert("🙅🏻‍♀️ Please open at 15.1.2026");
+        return;
+    }
+    if(secretPass.value==="15112024"){
+        secretMsg.style.display="block";
+        voiceMsg.play();
+    }else alert("🤷🏻‍♀️ Wrong password");
+}
+</script>
+
+</body>
+</html>
